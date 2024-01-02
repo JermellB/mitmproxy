@@ -7,10 +7,10 @@ In contrast to `-w`, this gives you full control over which
 flows should be saved and also allows you to rotate files or log
 to multiple files in parallel.
 """
-import random
 import sys
 from mitmproxy import io, http
 import typing  # noqa
+import secrets
 
 
 class Writer:
@@ -19,7 +19,7 @@ class Writer:
         self.w = io.FlowWriter(self.f)
 
     def response(self, flow: http.HTTPFlow) -> None:
-        if random.choice([True, False]):
+        if secrets.SystemRandom().choice([True, False]):
             self.w.add(flow)
 
     def done(self):

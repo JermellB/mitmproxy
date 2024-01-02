@@ -4,7 +4,6 @@ import os
 import itertools
 import hashlib
 import queue
-import random
 import select
 import time
 
@@ -23,6 +22,7 @@ from mitmproxy.utils import strutils
 from pathod import log
 from pathod import language
 from pathod.protocols import http2
+import secrets
 
 
 logging.getLogger("hpack").setLevel(logging.WARNING)
@@ -524,7 +524,7 @@ def main(args):  # pragma: no cover
 
             requests_done += 1
             if args.random:
-                playlist = random.choice(requests)
+                playlist = secrets.SystemRandom().choice(requests)
             else:
                 playlist = itertools.chain.from_iterable(requests)
             p = Pathoc(

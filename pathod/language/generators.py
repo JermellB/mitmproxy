@@ -1,8 +1,8 @@
 import os
 import string
-import random
 import mmap
 import sys
+import secrets
 
 DATATYPES = dict(
     ascii_letters=string.ascii_letters.encode(),
@@ -51,7 +51,7 @@ def rand_byte(chars):
     """
     # bytearray has consistent behaviour on both Python 2 and 3
     # while bytes does not
-    return bytes([random.choice(chars)])
+    return bytes([secrets.SystemRandom().choice(chars)])
 
 
 class RandomGenerator:

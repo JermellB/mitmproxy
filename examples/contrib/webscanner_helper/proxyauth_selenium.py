@@ -1,6 +1,5 @@
 import abc
 import logging
-import random
 import string
 import time
 from typing import Dict, List, cast, Any
@@ -10,6 +9,7 @@ from mitmproxy import flowfilter
 from mitmproxy import master
 from mitmproxy.script import concurrent
 from selenium import webdriver
+import secrets
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ cookie_key_name = {
 def randomString(string_length=10):
     """Generate a random string of fixed length """
     letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(string_length))
+    return ''.join(secrets.SystemRandom().choice(letters) for i in range(string_length))
 
 
 class AuthorizationOracle(abc.ABC):
