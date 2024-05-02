@@ -1,9 +1,9 @@
 import abc
 import copy
-import random
 from functools import total_ordering
 import pyparsing as pp
 from . import base
+import secrets
 
 
 @total_ordering  # type: ignore
@@ -26,7 +26,7 @@ class _Action(base.Token):
         c = copy.copy(self)
         l = msg.length(settings)
         if c.offset == "r":
-            c.offset = random.randrange(l)
+            c.offset = secrets.SystemRandom().randrange(l)
         elif c.offset == "a":
             c.offset = l + 1
         return c
