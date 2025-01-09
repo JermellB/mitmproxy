@@ -13,6 +13,7 @@ import argparse
 import contextlib
 import os
 import sys
+from security import safe_command
 
 
 class Wrapper:
@@ -51,8 +52,7 @@ class Wrapper:
         return dict([(b, a) for (a, b) in mapping])
 
     def run_command_with_input(self, command, input):
-        popen = subprocess.Popen(
-            command,
+        popen = safe_command.run(subprocess.Popen, command,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE)
         (stdout, stderr) = popen.communicate(input)

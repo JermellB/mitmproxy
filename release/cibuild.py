@@ -17,6 +17,7 @@ import click
 import parver
 
 import cryptography.fernet
+from security import safe_command
 
 
 @contextlib.contextmanager
@@ -479,7 +480,7 @@ def build_wininstaller(be: BuildEnviron):  # pragma: no cover
             shutil.move(str(IB_SETUP.with_suffix(".tmp")), str(IB_SETUP))
 
         click.echo("Install InstallBuilder...")
-        subprocess.run([str(IB_SETUP), "--mode", "unattended", "--unattendedmodeui", "none"], check=True)
+        safe_command.run(subprocess.run, [str(IB_SETUP), "--mode", "unattended", "--unattendedmodeui", "none"], check=True)
         assert os.path.isfile(IB_CLI)
 
     click.echo("Decrypt InstallBuilder license...")

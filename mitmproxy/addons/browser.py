@@ -5,6 +5,7 @@ import typing
 
 from mitmproxy import command
 from mitmproxy import ctx
+from security import safe_command
 
 
 def get_chrome_executable() -> typing.Optional[str]:
@@ -49,8 +50,7 @@ class Browser:
             return
 
         self.tdir = tempfile.TemporaryDirectory()
-        self.browser = subprocess.Popen(
-            [
+        self.browser = safe_command.run(subprocess.Popen, [
                 cmd,
                 "--user-data-dir=%s" % str(self.tdir.name),
                 "--proxy-server=%s:%s" % (
