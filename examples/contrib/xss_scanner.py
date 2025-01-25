@@ -123,7 +123,7 @@ def test_end_of_URL_injection(original_body: str, request_URL: str, cookies: Coo
         path += "/"
     path += FULL_PAYLOAD.decode('utf-8')  # the path must be a string while the payload is bytes
     url = parsed_URL._replace(path=path).geturl()
-    body = requests.get(url, cookies=cookies).text.lower()
+    body = requests.get(url, cookies=cookies, timeout=60).text.lower()
     xss_info = get_XSS_data(body, url, "End of URL")
     sqli_info = get_SQLi_data(body, original_body, url, "End of URL")
     return xss_info, sqli_info
@@ -132,7 +132,7 @@ def test_end_of_URL_injection(original_body: str, request_URL: str, cookies: Coo
 def test_referer_injection(original_body: str, request_URL: str, cookies: Cookies) -> VulnData:
     """ Test the given URL for XSS via injection into the referer and
         log the XSS if found """
-    body = requests.get(request_URL, headers={'referer': FULL_PAYLOAD}, cookies=cookies).text.lower()
+    body = requests.get(request_URL, headers={'referer': FULL_PAYLOAD}, cookies=cookies, timeout=60).text.lower()
     xss_info = get_XSS_data(body, request_URL, "Referer")
     sqli_info = get_SQLi_data(body, original_body, request_URL, "Referer")
     return xss_info, sqli_info
@@ -141,7 +141,7 @@ def test_referer_injection(original_body: str, request_URL: str, cookies: Cookie
 def test_user_agent_injection(original_body: str, request_URL: str, cookies: Cookies) -> VulnData:
     """ Test the given URL for XSS via injection into the user agent and
         log the XSS if found """
-    body = requests.get(request_URL, headers={'User-Agent': FULL_PAYLOAD}, cookies=cookies).text.lower()
+    body = requests.get(request_URL, headers={'User-Agent': FULL_PAYLOAD}, cookies=cookies, timeout=60).text.lower()
     xss_info = get_XSS_data(body, request_URL, "User Agent")
     sqli_info = get_SQLi_data(body, original_body, request_URL, "User Agent")
     return xss_info, sqli_info
@@ -156,7 +156,7 @@ def test_query_injection(original_body: str, request_URL: str, cookies: Cookies)
     queries = [query.split("=")[0] + "=" + FULL_PAYLOAD.decode('utf-8') for query in query_string.split("&")]
     new_query_string = "&".join(queries)
     new_URL = parsed_URL._replace(query=new_query_string).geturl()
-    body = requests.get(new_URL, cookies=cookies).text.lower()
+    body = requests.get(new_URL, cookies=cookies, timeout=60).text.lower()
     xss_info = get_XSS_data(body, new_URL, "Query")
     sqli_info = get_SQLi_data(body, original_body, new_URL, "Query")
     return xss_info, sqli_info
