@@ -21,7 +21,6 @@ Example:
 Authors: Maximilian Hils, Matthew Tuusberg
 """
 import collections
-import random
 
 from enum import Enum
 
@@ -29,6 +28,7 @@ import mitmproxy
 from mitmproxy import ctx
 from mitmproxy.exceptions import TlsProtocolException
 from mitmproxy.proxy.protocol import TlsLayer, RawTCPLayer
+import secrets
 
 
 class InterceptionResult(Enum):
@@ -86,7 +86,7 @@ class ProbabilisticStrategy(_TlsStrategy):
         super(ProbabilisticStrategy, self).__init__()
 
     def should_intercept(self, server_address):
-        return random.uniform(0, 1) < self.p
+        return secrets.SystemRandom().uniform(0, 1) < self.p
 
 
 class TlsFeedback(TlsLayer):
