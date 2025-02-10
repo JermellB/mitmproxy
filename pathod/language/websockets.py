@@ -1,4 +1,3 @@
-import random
 import string
 import typing  # noqa
 
@@ -7,6 +6,7 @@ import pyparsing as pp
 import mitmproxy.net.websockets
 from mitmproxy.utils import strutils
 from . import base, generators, actions, message
+import secrets
 
 NESTED_LEADER = b"pathod!"
 
@@ -180,7 +180,7 @@ class WebsocketFrame(message.Message):
             )
         if not self.knone and self.mask and self.mask.value and not self.key:
             allowed_chars = string.ascii_letters + string.digits
-            k = ''.join([allowed_chars[random.randrange(0, len(allowed_chars))] for i in range(4)])
+            k = ''.join([allowed_chars[secrets.SystemRandom().randrange(0, len(allowed_chars))] for i in range(4)])
             tokens.append(
                 Key(base.TokValueLiteral(k))
             )
