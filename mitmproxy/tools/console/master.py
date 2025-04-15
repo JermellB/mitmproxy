@@ -28,6 +28,7 @@ from mitmproxy.tools.console import keymap
 from mitmproxy.tools.console import palettes
 from mitmproxy.tools.console import signals
 from mitmproxy.tools.console import window
+from security import safe_command
 
 
 class ConsoleMaster(master.Master):
@@ -126,7 +127,7 @@ class ConsoleMaster(master.Master):
         cmd.append(name)
         with self.uistopped():
             try:
-                subprocess.call(cmd)
+                safe_command.run(subprocess.call, cmd)
             except:
                 signals.status_message.send(
                     message="Can't start editor: %s" % c
@@ -167,7 +168,7 @@ class ConsoleMaster(master.Master):
             cmd.append(name)
         with self.uistopped():
             try:
-                subprocess.call(cmd, shell=shell)
+                safe_command.run(subprocess.call, cmd, shell=shell)
             except:
                 signals.status_message.send(
                     message="Can't start external viewer: %s" % " ".join(c)
