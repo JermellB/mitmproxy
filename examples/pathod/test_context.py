@@ -12,7 +12,7 @@ def test_simple():
         # Get a URL for a pathod spec
         url = d.p("200:b@100")
         # ... and request it
-        r = requests.put(url)
+        r = requests.put(url, timeout=60)
 
         # Check the returned data
         assert r.status_code == 200
