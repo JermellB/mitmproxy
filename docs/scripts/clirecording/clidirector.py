@@ -1,10 +1,10 @@
 import json
 import libtmux
-import random
 import subprocess
 import threading
 import time
 import typing
+import secrets
 
 
 class InstructionSpec(typing.NamedTuple):
@@ -67,14 +67,14 @@ class CliDirector:
             target.send_keys(cmd=keys, enter=False, suppress_history=False)
 
             # inspired by https://github.com/dmotz/TuringType
-            real_pause = random.uniform(0, pause) + 0.4 * pause
+            real_pause = secrets.SystemRandom().uniform(0, pause) + 0.4 * pause
             if keys == "Space":
                 real_pause += 1.5 * pause
             elif keys == ".":
                 real_pause += pause
-            elif random.random() > 0.75:
+            elif secrets.SystemRandom().random() > 0.75:
                 real_pause += pause
-            elif random.random() > 0.95:
+            elif secrets.SystemRandom().random() > 0.95:
                 real_pause += 2 * pause
             self.pause(real_pause)
 
